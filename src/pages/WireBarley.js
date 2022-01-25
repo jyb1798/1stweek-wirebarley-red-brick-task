@@ -7,7 +7,8 @@ const Button = styled.button`
   font-weight: 600;
 `;
 const AlertButton = styled.button`
-  color: red;
+  color: #3b6ea5;
+  font-weight: 600;
 `;
 
 const WireBarley = (props) => {
@@ -15,16 +16,20 @@ const WireBarley = (props) => {
   const [price, setPrice] = useState(0);
   const [myData, setMyData] = useState([]);
   const [selected, setSelected] = useState({});
-  const [flag, setFlag] = useState(false);
+  // const number = Math.round(price);
+  // const priceNumber = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   const handleAlertOn = () => {
-    setFlag(true);
-    <AlertButton type="submit" onClick={alert("송금액이 바르지 않습니다!")} />;
+    if (true)
+      <AlertButton
+        type="submit"
+        onClick={alert("송금액이 바르지 않습니다!")}
+      />;
   };
 
   const handleAlertOff = () => {
     setSendPrice(price * selected.exchange);
-    setFlag(false);
+    if (false);
   };
 
   useEffect(() => {
