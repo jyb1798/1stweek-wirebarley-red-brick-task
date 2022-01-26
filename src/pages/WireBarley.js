@@ -5,17 +5,17 @@ const Container = styled.div``;
 const Select = styled.select``;
 const Button = styled.button`
   font-weight: 600;
+  height: 40px;
+  width: 100px;
 `;
-const AlertButton = styled.button`
-  color: #3b6ea5;
-  font-weight: 600;
-`;
+const AlertButton = styled.button``;
 
 const WireBarley = (props) => {
   const [sendPrice, setSendPrice] = useState(0);
   const [price, setPrice] = useState(0);
   const [myData, setMyData] = useState([]);
-  const [selected, setSelected] = useState({});
+  const [selected, setSelected] = useState(0);
+  const [exchange, setExchange] = useState(0);
 
   const handleAlertOn = () => {
     <AlertButton type="submit" onClick={alert("송금액이 바르지 않습니다!")} />;
@@ -25,9 +25,29 @@ const WireBarley = (props) => {
     setSendPrice(price * selected.exchange);
   };
 
+  const handleSelect = (e) => {
+    setSelected(myData[e.target.value]);
+    setExchange(myData[e.target.value].exchange);
+  };
+
+  const handlePrintFormat = (str) => {
+    let input = String(str).split(".");
+    let num1 = Number(input[0]).toLocaleString("ko-KR", {
+      maximumFractionDigits: 2,
+    });
+    let num2;
+
+    if (input[1].length === 0) num2 = `00`;
+    else if (input[1].length === 1) num2 = `${input[1]}0`;
+    else if (input[1].length === 2) num2 = input[1];
+    else num2 = input[1].substring(0, 2);
+
+    return `${num1}.${num2}`;
+  };
+
   useEffect(() => {
     let arr = [];
-    let idx = 1;
+    let idx = 0;
 
     if (props.data !== undefined) {
       for (let item of Object.keys(props.data.quotes)) {
@@ -49,6 +69,7 @@ const WireBarley = (props) => {
 
       setMyData(arr);
       setSelected(arr[1]);
+      setExchange(arr[1].exchange);
     }
   }, [props.data]);
 
@@ -60,9 +81,9 @@ const WireBarley = (props) => {
         수취국가:
         <Select
           onChange={(e) => {
-            setSelected(myData[e.target.value]);
+            handleSelect(e);
           }}
-          value={selected.idx - 1}
+          value={selected.idx}
         >
           {myData.map((item, index) => {
             return (
@@ -74,7 +95,9 @@ const WireBarley = (props) => {
         </Select>
       </p>
       <p>
-        환율: {selected.exchange} {selected.code}/USD
+        환율:
+        {exchange !== 0 ? handlePrintFormat(exchange) : 0}
+        {selected.code}/USD
       </p>
       <p>
         송금액:
@@ -97,7 +120,7 @@ const WireBarley = (props) => {
       </Button>
       <p>
         수취금액은
-        {`${sendPrice.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}`}
+        {sendPrice !== 0 ? handlePrintFormat(sendPrice) : 0}
         {selected.code} 입니다.
       </p>
     </Container>
