@@ -16,20 +16,13 @@ const WireBarley = (props) => {
   const [price, setPrice] = useState(0);
   const [myData, setMyData] = useState([]);
   const [selected, setSelected] = useState({});
-  // const number = Math.round(price);
-  // const priceNumber = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   const handleAlertOn = () => {
-    if (true)
-      <AlertButton
-        type="submit"
-        onClick={alert("송금액이 바르지 않습니다!")}
-      />;
+    <AlertButton type="submit" onClick={alert("송금액이 바르지 않습니다!")} />;
   };
 
   const handleAlertOff = () => {
     setSendPrice(price * selected.exchange);
-    if (false);
   };
 
   useEffect(() => {
